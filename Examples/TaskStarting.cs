@@ -11,16 +11,18 @@ namespace AsyncExamples.Examples
 
         protected override async Task RunExamples()
         {
-            await RunTaskWithConstructor();
-            await RunTaskWithFactory();
+            //await RunTaskWithConstructor();
+            //await RunTaskWithFactory();
+            //await RunTaskWithRun();
+
             await RunTaskWithRun();
 
-            //await RunTaskWithRun();
-
-            //await RunTask();
+            await RunTask();
             //await RunAwaitTask();
 
-            //await RunTaskWithRun();
+            await RunTaskWithRun();
+
+            await RunAwaitTask();
 
             #region WTF
 
@@ -30,11 +32,12 @@ namespace AsyncExamples.Examples
         }
 
 
-        //редко используется, поддерживает только Action
+        //редко используется, поддерживает только Action. Однако можно найти применение в оптимизации кода,
+        //когда заранее создаётся массив задач без запуска и запускается по мере необходимости
         private Task RunTaskWithConstructor()
         {
-            var task = new Task(() => PrintVoid(nameof(RunTaskWithConstructor)));
-            //var task = new Task(async () => await PrintTask(nameof(RunTaskWithConstructor)));
+            //var task = new Task(() => PrintVoid(nameof(RunTaskWithConstructor)));
+            var task = new Task(async () => await PrintTask(nameof(RunTaskWithConstructor)));
 
             task.Start();
 
@@ -44,9 +47,10 @@ namespace AsyncExamples.Examples
         //появился раньше Run, поддерживает Action и Action<T> + доп настройки и кастомные планировщики
         private Task RunTaskWithFactory()
         {
-            //одинаковое поведение для всех реализаций, т.к. возвращает Task<Task>, для одинаковой реализации использовать Unwrap (продвинутая техника)
-            var task = Task.Factory.StartNew(() => PrintVoid(nameof(RunTaskWithFactory))); 
-            //var task = Task.Factory.StartNew(() => PrintTask(nameof(RunTaskWithFactory)));
+            //одинаковое поведение для всех реализаций, т.к. возвращает Task<Task>. Для одинаковой реализации использовать Unwrap (продвинутая техника)
+            //var task = Task.Factory.StartNew(() => PrintVoid(nameof(RunTaskWithFactory))); 
+            var task = Task.Factory.StartNew(() => PrintTask(nameof(RunTaskWithFactory)));
+            //var task = Task.Factory.StartNew(() => PrintTask(nameof(RunTaskWithFactory))).Unwrap();
 
             return task;
         }
@@ -56,8 +60,8 @@ namespace AsyncExamples.Examples
         private Task RunTaskWithRun()
         {
             //разное поведение для реализации Task и void, т.к. делает Unwrap сам
-            var task = Task.Run(() => PrintVoid(nameof(RunTaskWithRun)));
-            //var task = Task.Run(() => PrintTask(nameof(RunTaskWithRun)));
+            //var task = Task.Run(() => PrintVoid(nameof(RunTaskWithRun), 5000));
+            var task = Task.Run(() => PrintTask(nameof(RunTaskWithRun), 2000));
 
             return task;
         }
@@ -81,7 +85,7 @@ namespace AsyncExamples.Examples
         #endregion
 
         // улучшаяет стектрейс при ошибке, но накладывает дополнительный оверхед по памяти и скорости,
-        // т.к. разворачивается в узел типа u -> u. Единственный спомоб (который я знаю), где лучше его
+        // т.к. разворачивается в узел типа u -> u. Единственный способ (который я знаю), где лучше его
         // использовать -> обрабатывать запросы к сторонним библиотекам, т.к. при генерации ошибки в методе
         // стектрейс будет содержать ваш нод для лучшего деббагинга, в остальных случаях лучше возвращать таску
         private async Task RunAwaitTask()

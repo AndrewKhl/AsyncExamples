@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace AsyncExamples.Examples
 {
@@ -42,6 +41,7 @@ namespace AsyncExamples.Examples
             await Task.WhenAny(tasks);
         }
 
+        // ContinueWith так же возвращает Task<Task>, для мерджа в одну таску надо использовать Unwrap
         private async Task SyncViaContinue()
         {
             await PrintTask($"{nameof(SyncViaContinue)}-1").ContinueWith(_ => PrintTask($"{nameof(SyncViaContinue)}-2"))

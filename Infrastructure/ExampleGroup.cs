@@ -27,21 +27,20 @@ namespace AsyncExamples.Examples
             return RunExamples();
         }
 
-
-        protected static async void PrintVoid(string methodName)
+        protected static async void PrintVoid(string methodName, int delay = WaitDelay)
         {
             Console.WriteLine($"{methodName} before delay");
 
-            await Task.Delay(WaitDelay);
+            await Task.Delay(delay);
 
             Console.WriteLine($"{methodName} after delay");
         }
 
-        protected static async Task PrintTask(string methodName)
+        protected static async Task PrintTask(string methodName, int delay = WaitDelay)
         {
             Console.WriteLine($"{methodName} before delay");
 
-            await Task.Delay(WaitDelay);
+            await Task.Delay(delay);
 
             Console.WriteLine($"{methodName} after delay");
         }

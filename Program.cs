@@ -20,7 +20,7 @@ namespace AsyncExamples
                 new TaskReturning(),
             };
 
-            await _examples[3].Run();
+            await _examples[1].Run();
 
             Console.WriteLine("\n-----------Finish Main-----------\n");
             Console.ReadLine();
