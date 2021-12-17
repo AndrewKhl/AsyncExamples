@@ -44,5 +44,16 @@ namespace AsyncExamples.Examples
 
             Console.WriteLine($"{methodName} after delay");
         }
+
+        protected static async Task<int> PrintTaskVal(string methodName, int delay = WaitDelay)
+        {
+            Console.WriteLine($"{methodName} before delay");
+
+            await Task.Delay(delay);
+
+            Console.WriteLine($"{methodName} after delay");
+
+            return 5;
+        }
     }
 }

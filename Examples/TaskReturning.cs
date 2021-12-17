@@ -10,11 +10,10 @@ namespace AsyncExamples.Examples
 
         protected override async Task RunExamples()
         {
-            await ReturnTask();
+            //await ReturnTask();
             await ReturnVoidAsTask();
-
-            Console.WriteLine(await ReturnAsyncTaskWithValue());
-            Console.WriteLine(await ReturnTaskWithValue());
+            //Console.WriteLine(await ReturnAsyncTaskWithValue());
+            //Console.WriteLine(await ReturnTaskWithValue());
         }
 
 
@@ -32,7 +31,7 @@ namespace AsyncExamples.Examples
 
         private async Task<int> ReturnAsyncTaskWithValue()
         {
-            await PrintTask(nameof(ReturnAsyncTaskWithValue));
+            await PrintTaskVal(nameof(ReturnAsyncTaskWithValue));
 
             return 5;
         }

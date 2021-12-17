@@ -21,6 +21,20 @@ namespace AsyncExamples.Examples
             await PrintTask(nameof(SyncViaAwait));
         }
 
+        //иногда используется массив незапущенных задач, т.к. это помогает по максимому синхронизировать время старта тасок
+        private async Task OptimizationViaTaskArr()
+        {
+            var tasks = new Task[4];
+
+            for (int i = 0; i < tasks.Length; ++i)
+                tasks[i] = new Task(() => Task.Delay(100));
+
+            for (int i = 0; i < tasks.Length; ++i)
+                tasks[i].Start();
+
+            await Task.WhenAll(tasks);
+        }
+
         private async Task SyncViaWaitAll()
         {
             var tasks = new Task[4];
